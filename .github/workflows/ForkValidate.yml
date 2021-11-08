@@ -33,6 +33,7 @@ jobs:
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{github.event.pull_request.html_url}}
         run: |
           Write-Output "Welcome Mr Forky"
           $PRId="${{ github.event.pull_request.number }}"
