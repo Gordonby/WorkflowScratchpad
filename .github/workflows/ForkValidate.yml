@@ -33,6 +33,13 @@ jobs:
         shell: pwsh
         run: |
           Write-Output "Welcome Mr Forky"
+          
+      - name: Add label to signal forky and full testing required
+        if: github.event.pull_request.head.repo.fork
+        shell: pwsh
+        run: |
+          Write-Output "Add label"
+          
 
       - name: Bicep linter
         shell: pwsh
@@ -48,4 +55,16 @@ jobs:
         shell: pwsh
         run: |
           Write-Output "Check which files have been changed"
-          
+  
+  #This job uses secrets, and therefore cannot be run from a fork
+  Deploy:
+    if: ${{ !github.event.pull_request.head.repo.fork }}
+    runs-on: ubuntu-latest
+    steps:
+      #Get the code files from the repo
+      - uses: actions/checkout@v2
+
+      - name: Job parameter check
+        run: |
+          echo "Actor is: ${{github.actor}}"
+          echo "EventTrigger name is ${{github.event_name}}"
