@@ -33,6 +33,9 @@ jobs:
         shell: pwsh
         run: |
           Write-Output "Welcome Mr Forky"
+          $PRId="${{ github.event.pull_request.number }}"
+          
+          gh pr comment $PRId --body "PR origin is from fork - thanks for the contribution!"
           
       - name: Add label to signal forky and full testing required
         if: github.event.pull_request.head.repo.fork
