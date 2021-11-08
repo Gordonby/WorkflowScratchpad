@@ -20,16 +20,13 @@ jobs:
 
       - name: Job parameter check
         run: |
-          RG='${{ env.RG }}'
-          echo "RG is: $RG"
-
           echo "Actor is: ${{github.actor}}"
           echo "EventTrigger name is ${{github.event_name}}"
           echo "Ref is ${{github.ref}}"
           echo "Head Ref is ${{github.head_ref}}"
           echo "Base Ref is ${{github.base_ref}}"
           echo "PR obj is ${{toJson(github.event.pull_request)}}"
-          echo "Is fork? ${{github.event.pull_request.head.repo.fork)}}"
+          echo "Is fork? ${{github.event.pull_request.head.repo.fork}}"
 
       - name: Show GitHub context
         env:
