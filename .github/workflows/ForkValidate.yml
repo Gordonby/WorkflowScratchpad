@@ -1,15 +1,16 @@
+# Sample action used to show some of the trickery you can do when someone raises a PR against your repo from a fork
+
 name: InfraCI - Fork PR Validation
 
 on:
   #Run when PR's are made to main, where the changes are in the bicep directory or this workflow file itself
   pull_request_target:
-    branches: [main, develop]
-    #paths:
+    branches: [main, develop] #only trigger for PR's to main/develop
+    #paths: #only trigger for changes in the bicep file directory
       #- "bicep/*"
-      #- ".github/workflows/ForkValidate.yml"
 
 env:
-  AZCLIVERSION: 2.29.2 #Pinning to a specific AZ CLI version
+  AZCLIVERSION: 2.29.2 #Pinning to a specific AZ CLI version for working with the AZ CLI
   
 jobs:
   Validation:
@@ -40,7 +41,7 @@ jobs:
           
           gh pr comment $PRId --body "PR origin is from fork - thanks for the contribution!"
           
-      - name: Add label to signal forky and full testing required
+      - name: Add labels to PR that signal forked and full testing required
         if: github.event.pull_request.head.repo.fork
         shell: pwsh
         env:
@@ -52,23 +53,19 @@ jobs:
           gh pr edit $PRId --add-label "requires-full-validation,do-not-merge"
           
           #gh pr edit $PRId --add-label do-not-merge
-
-      - name: Bicep linter
-        shell: pwsh
-        run: |
-          Write-Output "Run Bicep Linter"
-
-      - name: GitHub CLI
-        shell: pwsh
-        run: |
-          Write-Output "Comment back to the PR the linting results and nature of the change"
           
-      - name: Check Changed Files
+      - name: List files changed in this PR
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          Write-Output "Check which files have been changed"
+          $PRId="${{ github.event.pull_request.number }}"
+          
+          $files=gh pr view $PRId --json files --jq '.files.[].path'
+          
+          write-output $files
   
-  #This job uses secrets, and therefore cannot be run from a fork
+  #This job uses secrets, and therefore cannot be run from a fork - so we must skip any jobs that use secrets
   Deploy:
     if: ${{ !github.event.pull_request.head.repo.fork }}
     runs-on: ubuntu-latest
@@ -76,7 +73,8 @@ jobs:
       #Get the code files from the repo
       - uses: actions/checkout@v2
 
-      - name: Job parameter check
+      - name: Deploy
         run: |
-          echo "Actor is: ${{github.actor}}"
-          echo "EventTrigger name is ${{github.event_name}}"
+          echo "Do a AZ DEPLOYMENT VALIDATE"
+          echo "Do a AZ DEPLOYMENT WHATIF"
+          echo "Do a AZ DEPLOYMENT CREATE"
