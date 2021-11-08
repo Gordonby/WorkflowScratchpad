@@ -2,7 +2,7 @@ name: InfraCI - Fork PR Validation
 
 on:
   #Run when PR's are made to main, where the changes are in the bicep directory or this workflow file itself
-  pull_request:
+  pull_request_target:
     branches: [main, develop]
     #paths:
       #- "bicep/*"
