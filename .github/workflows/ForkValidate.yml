@@ -49,9 +49,9 @@ jobs:
           $PRId="${{ github.event.pull_request.number }}"
           
           #if changes to bicep
-          git pr edit $PRId --add-label requires-full-validation
+          gh pr edit $PRId --add-label "requires-full-validation,do-not-merge"
           
-          git pr edit $PRId --add-label do-not-merge
+          #gh pr edit $PRId --add-label do-not-merge
 
       - name: Bicep linter
         shell: pwsh
