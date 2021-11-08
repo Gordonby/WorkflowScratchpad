@@ -33,7 +33,7 @@ jobs:
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{github.event.pull_request.html_url}}
+          #PR_URL: ${{github.event.pull_request.html_url}}
         run: |
           Write-Output "Welcome Mr Forky"
           $PRId="${{ github.event.pull_request.number }}"
@@ -43,9 +43,15 @@ jobs:
       - name: Add label to signal forky and full testing required
         if: github.event.pull_request.head.repo.fork
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          Write-Output "Add label"
+          $PRId="${{ github.event.pull_request.number }}"
           
+          #if changes to bicep
+          git pr edit $PRId --add-label requires-full-validation
+          
+          git pr edit $PRId --add-label do-not-merge
 
       - name: Bicep linter
         shell: pwsh
