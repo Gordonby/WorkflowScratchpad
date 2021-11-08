@@ -26,12 +26,13 @@ jobs:
           echo "Head Ref is ${{github.head_ref}}"
           echo "Base Ref is ${{github.base_ref}}"
           echo "PR obj is ${{toJson(github.event.pull_request)}}"
-          echo "Is fork? ${{github.event.pull_request.head.repo.fork}}"
+          echo "Is fork? ${{}}"
 
-      - name: Show GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      - name: Welcome the forker
+        if: github.event.pull_request.head.repo.fork
+        shell: pwsh
+        run: |
+          Write-Output "Welcome Mr Forky"
 
       - name: Bicep linter
         shell: pwsh
