@@ -31,6 +31,8 @@ jobs:
       - name: Welcome the forker
         if: github.event.pull_request.head.repo.fork
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           Write-Output "Welcome Mr Forky"
           $PRId="${{ github.event.pull_request.number }}"
