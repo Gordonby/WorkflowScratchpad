@@ -1,5 +1,6 @@
 # Workflow Scratchpad
-Playground for action workflow scaffolds
+
+This repo is intended to show GitHub action workflow patterns.
 
 ## Summary
 
