@@ -18,9 +18,10 @@ jobs:
     strategy:
       matrix:
         files: ${{ steps.getfiles.outputs.FILELIST}}
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
 
       - name: Process file
         run: ${{ matrix.files }}
+
