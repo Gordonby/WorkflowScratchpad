@@ -16,7 +16,7 @@ jobs:
           $FILELIST=@('one', 'two', 'three')
           Write-Output $FILELIST
           
-          $FILELISTJSON=$filelist | ConvertTo-Json
+          $FILELISTJSON=$filelist | ConvertTo-Json -Compress
           Write-Output $FILELISTJSON
 
           echo "::set-output name=FILELIST::$FILELISTJSON"
