@@ -6,6 +6,8 @@ on:
 jobs:
   GetFileList:
     runs-on: ubuntu-latest
+    outputs:
+      FILELIST: ${{ steps.getfiles.outputs.FILELIST}}
     steps:
       - name: Get List
         id: getfiles
@@ -15,9 +17,10 @@ jobs:
           echo "::set-output name=FILELIST::$FILELIST"
           
   LoopOverFiles:
+    needs: [GetFileList]
     strategy:
       matrix:
-        files: ${{ steps.getfiles.outputs.FILELIST}}
+        files: ${{ needs.GetFileList.outputs.FILELIST}} 
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
