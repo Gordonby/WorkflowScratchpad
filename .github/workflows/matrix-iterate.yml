@@ -1,0 +1,26 @@
+name: Iterate over files
+
+on:
+  workflow_dispatch:
+
+jobs:
+  GetFileList:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get List
+        id: getfiles
+        shell: pwsh
+        run: |
+          $FILELIST=@('one', 'two', 'three')
+          echo "::set-output name=FILELIST::$FILELIST"
+          
+  LoopOverFiles:
+    strategy:
+      matrix:
+        files: ${{ steps.getfiles.outputs.FILELIST}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Process file
+        run: ${{ matrix.files }}
