@@ -13,7 +13,8 @@ jobs:
         id: getfiles
         shell: pwsh
         run: |
-          $FILELIST=@('one', 'two', 'three')
+          #$FILELIST=@('one', 'two', 'three') #PowerShell arrays don't work :-0
+          $FILELIST="[one,two,three]"
           echo "::set-output name=FILELIST::$FILELIST"
           
   LoopOverFiles:
