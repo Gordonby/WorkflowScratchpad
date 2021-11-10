@@ -14,7 +14,10 @@ jobs:
         shell: pwsh
         run: |
           $FILELIST=@('one', 'two', 'three')
+          Write-Output $FILELIST
+          
           $FILELISTJSON=$filelist | ConvertTo-Json
+          Write-Output $FILELISTJSON
 
           echo "::set-output name=FILELIST::$FILELISTJSON"
           
@@ -31,3 +34,16 @@ jobs:
       - name: Process file
         run: echo ${{ matrix.files }}
 
+  Debug:
+    needs: [GetFileList]
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Output variable
+        run: |
+          echo ${{ needs.GetFileList.outputs.FILELIST }} 
+          
+      - name: Output jsondecoded variable
+        run: |
+          echo ${{ fromJson(needs.GetFileList.outputs.FILELIST) }} 
