@@ -21,7 +21,8 @@ jobs:
     needs: [GetFileList]
     strategy:
       matrix:
-        files: ${{ needs.GetFileList.outputs.FILELIST}} 
+        #files: ${{ needs.GetFileList.outputs.FILELIST}} 
+        files: [staticone, statictwo, staticthree]
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
