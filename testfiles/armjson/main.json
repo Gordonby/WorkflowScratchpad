@@ -11,7 +11,7 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "ukwest"
+      "defaultValue": "uksouth"
     },
     "resourceName": {
       "type": "string",
