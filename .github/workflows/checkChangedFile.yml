@@ -46,7 +46,7 @@ jobs:
           $arm2paramList = @()
           $arm2params.keys | % {$arm2paramList+= New-Object PSObject -Property ([Ordered]@{Parameter=$_; DefaultValue=$arm2params.Get_Item($_).defaultValue | ConvertTo-Json -Compress })}
 
-          $comparison = Compare-Object $arm1paramList $arm2paramList -Property Name, DefaultValue -PassThru | select Parameter, DefaultValue, @{N='FileVersion';E={$_.SideIndicator.replace('<=','Old').replace('=>','New')}} | sort Parameter, @{e='FileVersion';desc=$true}
+          $comparison = Compare-Object $arm1paramList $arm2paramList -Property Name, DefaultValue -PassThru | select Parameter, DefaultValue, @{N='FileVersion';E={$_.SideIndicator.replace('<=','Old').replace('=>','New')}} #| sort-object Parameter, @{e='FileVersion';desc=$true}
 
           [string]$html = $comparison | ConvertTo-Html -Fragment | Out-String
           "<h2>Detected parameter change</h2><p>Parameter changes need to be reviewed carefully</p>" + $html | Out-File "ghpr.html"
