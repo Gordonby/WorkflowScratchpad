@@ -11,7 +11,7 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "eastus"
+      "defaultValue": "eastus2"
     },
     "resourceName": {
       "type": "string",
