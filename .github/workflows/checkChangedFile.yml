@@ -50,10 +50,12 @@ jobs:
 
           $comparison = Compare-Object $arm1paramList $arm2paramList -Property Name, DefaultValue -PassThru | select Parameter, DefaultValue, @{N='FileVersion';E={$_.SideIndicator.replace('<=','Old').replace('=>','New')}} #| sort-object Parameter, @{e='FileVersion';desc=$true}
 
-          [string]$html = $comparison | ConvertTo-Html -Fragment | Out-String
-          "<h2>Detected parameter change</h2><p>Parameter changes need to be reviewed carefully</p>" + $html | Out-File "ghpr.html"
 
           if ($comparison.length -gt 0) {
+              cd old
+              [string]$html = $comparison | ConvertTo-Html -Fragment | Out-String
+              "<h2>Detected parameter change</h2><p>Parameter changes need to be reviewed carefully</p>" + $html | Out-File "ghpr.html"
+
               #Why do markdown, when you can do HTML :D
               #GitHub uses a markdown rendering tool called Glamour. It copes with HTML pretty well, and pwsh loves html not markdown.
               
