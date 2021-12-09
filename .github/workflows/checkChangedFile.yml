@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Variable check
         run: |
-          echo ${{ github.event.pull_request.id }}
+          echo ${{ toJSON(github.event.pull_request) }}
         
       - uses: actions/checkout@v2
         with:
