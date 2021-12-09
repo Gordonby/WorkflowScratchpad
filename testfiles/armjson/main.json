@@ -11,7 +11,7 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "eastus2"
+      "defaultValue": "uksouth"
     },
     "resourceName": {
       "type": "string",
