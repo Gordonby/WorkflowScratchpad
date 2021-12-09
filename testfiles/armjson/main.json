@@ -11,7 +11,7 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "westeurope"
+      "defaultValue": "eastus"
     },
     "resourceName": {
       "type": "string",
