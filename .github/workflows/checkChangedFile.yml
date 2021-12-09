@@ -56,6 +56,8 @@ jobs:
           if ($comparison.length -gt 0) {
               #Why do markdown, when you can do HTML :D
               #GitHub uses a markdown rendering tool called Glamour. It copes with HTML pretty well, and pwsh loves html not markdown.
+              
+              cd old
               gh pr review ${{ github.event.pull_request.number }} -c -F "ghpr.html"
               gh pr review ${{ github.event.pull_request.number }} -r -F "ghpr.html"
           }
