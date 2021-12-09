@@ -36,6 +36,7 @@ jobs:
           oldFilePath: 'old/testfiles/armjson/main.json'
           newFilePath : 'new/testfiles/armjson/main.json'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
         shell: pwsh
         run: |
           $arm1params = get-content $Env:oldFilePath | ConvertFrom-Json -AsHashtable | Select -expandProperty parameters
