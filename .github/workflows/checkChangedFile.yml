@@ -1,0 +1,27 @@
+name: Review PR for parameter changes
+
+on:
+  pull_request_target:
+    branches: [ main ]
+    paths: "testfiles/armjson/main.json"
+
+jobs:
+  checkPr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: branch
+        
+      - uses: actions/checkout@v2
+        with:
+          path: head
+          ref: ${{ github.event.pull_request.head.sha }}    
+      
+      - name: Display old file
+        run: cat head/testfiles/armjson/main.json
+          
+      - name: Display new file
+        run: cat branch/testfiles/armjson/main.json
+          
