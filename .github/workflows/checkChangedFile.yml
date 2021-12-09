@@ -31,10 +31,11 @@ jobs:
       - name: Display old file
         run: cat old/testfiles/armjson/main.json
           
-      - name: Display old file
+      - name: Check for Parameter changes in main.json
         env: 
           oldFilePath: 'old/testfiles/armjson/main.json'
           newFilePath : 'new/testfiles/armjson/main.json'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
           $arm1params = get-content $Env:oldFilePath | ConvertFrom-Json -AsHashtable | Select -expandProperty parameters
