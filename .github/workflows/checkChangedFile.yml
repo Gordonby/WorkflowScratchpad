@@ -21,17 +21,25 @@ jobs:
       - uses: actions/checkout@v2
         name: Git Checkout target
         with:
-          path: old
+          path: base
         
       - uses: actions/checkout@v2
         name: Git Checkout branch
         with:
           path: new
           ref: ${{ github.event.pull_request.head.sha }}    
+          
+      - uses: actions/checkout@v2
+        name: Git Checkout branch
+        with:
+          path: last
+          fetch-depth: 2
+      - run: git checkout HEAD^
       
-      - name: Check for Parameter changes in main.json
+      - name: Check for Parameter changes with last commit
+        id: lastcommit
         env: 
-          oldFilePath: 'old/testfiles/armjson/main.json'
+          oldFilePath: 'last/testfiles/armjson/main.json'
           newFilePath : 'new/testfiles/armjson/main.json'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
@@ -57,7 +65,39 @@ jobs:
               #GitHub uses a markdown rendering tool called Glamour. It copes with HTML pretty well, and pwsh loves html not markdown.
               gh pr review ${{ github.event.pull_request.number }} -r -F "ghpr.html"
           }
-          
+          echo "::set-output name=CHANGECOUNT::$($comparison.length)"
+
+      - name: Check for Parameter changes with base
+        id: sincebase
+        env: 
+          oldFilePath: 'base/testfiles/armjson/main.json'
+          newFilePath : 'new/testfiles/armjson/main.json'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        shell: pwsh
+        run: |
+          $arm1params = get-content $Env:oldFilePath | ConvertFrom-Json -AsHashtable | Select -expandProperty parameters
+          $arm2params = get-content $Env:newFilePath | ConvertFrom-Json -AsHashtable | Select -expandProperty parameters
+
+          $arm1paramList = @()
+          $arm1params.keys | % {$arm1paramList += New-Object PSObject -Property ([Ordered]@{Parameter=$_; DefaultValue=$arm1params.Get_Item($_).defaultValue | ConvertTo-Json -Compress })}
+
+          $arm2paramList = @()
+          $arm2params.keys | % {$arm2paramList+= New-Object PSObject -Property ([Ordered]@{Parameter=$_; DefaultValue=$arm2params.Get_Item($_).defaultValue | ConvertTo-Json -Compress })}
+
+          $comparison = Compare-Object $arm1paramList $arm2paramList -Property Name, DefaultValue -PassThru | select Parameter, DefaultValue, @{N='FileVersion';E={$_.SideIndicator.replace('<=','Old').replace('=>','New')}}
+
+          if ($comparison.length -gt 0) {
+              cd old
+              [string]$html = $comparison | sort-object Parameter, @{e='FileVersion';desc=$true} | ConvertTo-Html -Fragment | Out-String
+              "<h2>Detected parameter change</h2><p>Parameter changes need to be reviewed carefully</p>" + $html | Out-File "ghpr.html"
+
+              #Why do markdown, when you can do HTML :D
+              #GitHub uses a markdown rendering tool called Glamour. It copes with HTML pretty well, and pwsh loves html not markdown.
+              gh pr review ${{ github.event.pull_request.number }} -r -F "ghpr.html"
+          }
+          echo "::set-output name=CHANGECOUNT::$($comparison.length)"
+
       - name: Debug - Display new file
         if: failure()
         run: cat new/testfiles/armjson/main.json
