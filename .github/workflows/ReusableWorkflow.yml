@@ -3,6 +3,13 @@ name: Resuable workflow with manual launch
 
 on:
   workflow_call:
+    inputs:
+      RG:
+        required: true
+        type: string
+      AKSNAME:
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       RG:
