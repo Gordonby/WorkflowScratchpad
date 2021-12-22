@@ -1,0 +1,32 @@
+# Demonstrates how to install the Azure Voting app, leveraging the AKS Run Command.
+# This works great for private clusters, but also works with regular clusters too.
+
+name: App Deploy - Azure Vote
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      RG:
+        required: true
+        type: string
+      AKSNAME:
+        required: true
+        type: string
+
+jobs:
+  App_Create:
+    runs-on: ubuntu-latest
+    concurrency: "Ag-${{ inputs.AGNAME}}" #AppGateway doesn't like concurrent updates
+    env:
+      APPNAME: "${{ inputs.APPNAME }}"
+      NAMESP: "${{ inputs.NAMESPACE }}"
+      AKSNAME: "${{ inputs.AKSNAME}}"
+      RG: "${{ inputs.RG }}"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Job parameter inspection
+        run: |
+          echo "RG is ${{ inputs.RG }}"
+          echo "AKS name is ${{ inputs.AKSNAME }}"
