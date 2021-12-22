@@ -1,6 +1,6 @@
 # Workflow is for testing reusable workflows to expedite the developer inner loop.
 
-name: Test Harness for Reusable workflows
+name: Test Harness for Reusable workflow
 
 on:
   workflow_dispatch:
