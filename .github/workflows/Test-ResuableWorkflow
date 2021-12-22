@@ -1,0 +1,13 @@
+# Workflow is for testing reusable workflows to expedite the developer inner loop.
+
+name: Test Harness for Reusable workflows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  callreusable:
+    uses: Gordonby/WorkflowScratchpad/.github/workflows/ReusableWorkflow.yml
+    with:
+      RG: Automation-Actions-AksDeployCI
+      AKSNAME: aks-Byo
