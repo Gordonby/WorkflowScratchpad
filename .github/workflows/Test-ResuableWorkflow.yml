@@ -7,7 +7,7 @@ on:
 
 jobs:
   callreusable:
-    uses: Gordonby/WorkflowScratchpad/.github/workflows/ReusableWorkflow.yml
+    uses: Gordonby/WorkflowScratchpad/.github/workflows/ReusableWorkflow.yml@main
     with:
       RG: Automation-Actions-AksDeployCI
       AKSNAME: aks-Byo
