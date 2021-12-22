@@ -13,10 +13,10 @@ on:
         type: string
 
 jobs:
-  App_Create:
+  Job:
     runs-on: ubuntu-latest
     steps:
       - name: Job parameter inspection
         run: |
-          echo "RG is ${{ inputs.RG }}"
-          echo "AKS name is ${{ inputs.AKSNAME }}"
+          echo "RG is ${{ github.event.inputs.RG }}"
+          echo "AKS name is ${{ github.event.inputs.AKSNAME }}"
