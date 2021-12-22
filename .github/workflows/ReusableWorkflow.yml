@@ -10,14 +10,6 @@ on:
       AKSNAME:
         required: true
         type: string
-  workflow_dispatch:
-    inputs:
-      RG:
-        required: true
-        type: string
-      AKSNAME:
-        required: true
-        type: string
 
 jobs:
   Job:
