@@ -74,12 +74,6 @@ jobs:
           echo "[OPTIONAL STEPS]"
           echo "Retrieving ACR information for $ACRNAME"
           ACRINFO=$(az acr show -n $ACRNAME)
-
-          echo "Is admin user enabled"
-          echo $ACRINFO | jq -r ".adminUserEnabled"
-
-          echo "Is public network access enabled"
-          echo $ACRINFO | jq -r ".publicNetworkAccess"        
           
           echo "Retrieving access token from $ACRNAME"
           az acr login -n $ACRNAME --expose-token
