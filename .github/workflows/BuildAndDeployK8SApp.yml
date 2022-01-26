@@ -77,21 +77,18 @@ jobs:
           
           echo "Token received. Token length is ${#ACRTOKEN}"
           
-          #if [ "${#ACRTOKEN}" == "0" ]
-          #then
-            echo "ACR Token was not retrieved"
-            az acr login --name $ACRNAME --expose-token
-            
-            ACRINFO=$(az acr show -n $ACRNAME)
-            
-            echo "Is admin user enabled"
-            echo $ACRINFO | jq -r ".adminUserEnabled"
-            
-            echo "Is public network access enabled"
-            echo $ACRINFO | jq -r ".publicNetworkAccess"
-            
-            exit 1
-          #fi
+          echo "ACR Token was not retrieved"
+          az acr login --name $ACRNAME --expose-token
+
+          ACRINFO=$(az acr show -n $ACRNAME)
+
+          echo "Is admin user enabled"
+          echo $ACRINFO | jq -r ".adminUserEnabled"
+
+          echo "Is public network access enabled"
+          echo $ACRINFO | jq -r ".publicNetworkAccess"
+
+          exit 1
           
           
           echo "Passing token as stdin to docker login"
