@@ -71,9 +71,6 @@ jobs:
         run:
           set -e 
           
-          echo "[OPTIONAL STEPS]"
-         
-          
           echo "Retrieving access token from $ACRNAME"
           az acr login -n $ACRNAME --expose-token
           ACRTOKEN=$(az acr login -n $ACRNAME --expose-token --output tsv --query accessToken)
