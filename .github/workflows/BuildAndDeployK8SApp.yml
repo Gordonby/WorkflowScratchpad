@@ -23,7 +23,7 @@ on:
         required: false
         type: string
       APPREPO:
-        default: "https://github.com/Gordonby/azure-voting-app-redis.git"
+        default: "Gordonby/azure-voting-app-redis"
         required: false
         type: string
       APPREPOREF:
