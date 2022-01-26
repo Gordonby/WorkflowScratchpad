@@ -93,6 +93,7 @@ jobs:
             echo "Re-running full ACR login command"
             az acr login --name $ACRNAME --expose-token
             
+            echo "::error ::Could not retrieve ACR token"
             exit 1
           fi
           
