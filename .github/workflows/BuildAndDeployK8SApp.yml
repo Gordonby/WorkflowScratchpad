@@ -79,8 +79,10 @@ jobs:
             exit 1
           fi
           
-          ACRTOKEN=$(echo $TOKEN | jq ".accessToken")
-          LOGINSERVER=$(echo $TOKEN | jq ".loginServer")
+          ACRTOKEN=$(echo $TOKEN | jq -r ".accessToken")
+          LOGINSERVER=$(echo $TOKEN | jq -r ".loginServer")
+          
+          echo "ACR Login Server: $LOGINSERVER"
           echo "::set-output name=loginServer::$LOGINSERVER"
           
           echo "Passing token as stdin to docker login"
