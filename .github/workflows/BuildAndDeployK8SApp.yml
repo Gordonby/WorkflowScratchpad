@@ -76,6 +76,13 @@ jobs:
           
           echo "Token received. Token length is ${#ACRTOKEN}"
           
+          if [ ${#ACRTOKEN} == 0 ]
+          then
+            echo "ACR Token was not retrieved"
+            az acr login --name $ACRNAME --expose-token
+            exit 1
+          fi
+          
           echo "Passing token as stdin to docker login"
           echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
