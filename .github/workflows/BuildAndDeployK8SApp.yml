@@ -70,7 +70,7 @@ jobs:
       - name: Connect to Azure Container Registry (ACR)
         run:
           TOKEN=$(az acr login --name $ACRNAME --expose-token --output tsv --query accessToken)
-          docker login $ACRNAME.azurecr.io --username $ACRNAME --password $TOKEN
+          docker login $ACRNAME.azurecr.io --username 00000000-0000-0000-0000-000000000000 --password $TOKEN
 
       - name: Container build and push to a Azure Container Registry (ACR)
         env:
@@ -82,6 +82,7 @@ jobs:
           
   Deploy:
     runs-on: ubuntu-latest
+    needs: [BuildPush]
     env:
       APPNAME: "${{ inputs.APPNAME }}"
       NAMESP: "${{ inputs.NAMESPACE }}"
