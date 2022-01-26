@@ -92,6 +92,7 @@ jobs:
             exit 1
           fi
           
+          
           echo "Passing token as stdin to docker login"
           echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
