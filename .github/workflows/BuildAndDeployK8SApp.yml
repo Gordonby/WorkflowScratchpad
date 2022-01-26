@@ -71,7 +71,7 @@ jobs:
         id: acrconnect
         run: |
           echo "Retrieving access token from $ACRNAME"
-          TOKEN=az acr login -n $ACRNAME --expose-token
+          TOKEN=$(az acr login -n $ACRNAME --expose-token)
 
           if [ -z "$TOKEN" ]
           then
