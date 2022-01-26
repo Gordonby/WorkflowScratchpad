@@ -76,7 +76,7 @@ jobs:
           
           echo "Token received. Token length is ${#ACRTOKEN}"
           
-          if [ ${#ACRTOKEN} == 0 ]
+          if [ "${#ACRTOKEN}" == "0" ]
           then
             echo "ACR Token was not retrieved"
             az acr login --name $ACRNAME --expose-token
