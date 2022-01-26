@@ -72,10 +72,12 @@ jobs:
           set -e 
           
           echo "Retrieving access token from $ACRNAME"
-          TOKEN=$(az acr login --name $ACRNAME --expose-token --output tsv --query accessToken)
+          ACRTOKEN=$(az acr login --name $ACRNAME --expose-token --output tsv --query accessToken)
+          
+          echo "Token received. Token length is ${#ACRTOKEN}"
           
           echo "Passing token as stdin to docker login"
-          echo $TOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
+          echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
       - name: Container build and push to a Azure Container Registry (ACR)
         env:
