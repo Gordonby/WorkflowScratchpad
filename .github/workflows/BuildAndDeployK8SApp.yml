@@ -71,8 +71,8 @@ jobs:
         run:
           set -e 
           
-          echo "Retrieving access token from $ACRNAME"
-          ACRTOKEN=$(az acr login --name $ACRNAME --expose-token --output tsv --query accessToken)
+          echo "Retrieving access token from $ACRNAME in $RG"
+          ACRTOKEN=$(az acr login -n $ACRNAME -g $RG --expose-token --output tsv --query accessToken)
           
           echo "Token received. Token length is ${#ACRTOKEN}"
           
