@@ -91,7 +91,7 @@ jobs:
       - name: Container build and push to a Azure Container Registry (ACR)
         env:
           APPREPOPATH: "${{ inputs.APPREPOPATH}}"
-          ACRSERVER: steps.acrconnect.outputs.loginServer
+          ACRSERVER: "${{ steps.acrconnect.outputs.loginServer }}"
         run: |
           cd $APPREPOPATH
           docker build . -t $ACRSERVER/${{ inputs.APPNAME }}:${{ github.sha }}
