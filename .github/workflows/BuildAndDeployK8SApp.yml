@@ -68,32 +68,30 @@ jobs:
           allow-no-subscriptions: false
       
       - name: Connect to Azure Container Registry (ACR)
-        uses: Azure/cli@1.0.4
-        with:
-          inlineScript: |
-            set -e 
+        run: |
+          set -e 
 
-            echo "Retrieving access token from $ACRNAME"
-            az acr login -n $ACRNAME --expose-token
-            ACRTOKEN=$(az acr login -n $ACRNAME --expose-token --output tsv --query accessToken)
+          echo "Retrieving access token from $ACRNAME"
+          az acr login -n $ACRNAME --expose-token
+          ACRTOKEN=$(az acr login -n $ACRNAME --expose-token --output tsv --query accessToken)
 
-            echo "Token received. Token length is ${#ACRTOKEN}"
+          echo "Token received. Token length is ${#ACRTOKEN}"
 
-            if [ -z "$ACRTOKEN" ]
-            then
-              echo "ACR Token was not retrieved successfully"
+          if [ -z "$ACRTOKEN" ]
+          then
+            echo "ACR Token was not retrieved successfully"
 
-              echo "Retrieving ACR information for $ACRNAME"
-              ACRINFO=$(az acr show -n $ACRNAME)
+            echo "Retrieving ACR information for $ACRNAME"
+            ACRINFO=$(az acr show -n $ACRNAME)
 
-              echo "Re-running full ACR login command in debug mode"
-              az acr login --name $ACRNAME --expose-token --debug
+            echo "Re-running full ACR login command in debug mode"
+            az acr login --name $ACRNAME --expose-token --debug
 
-              echo "::error ::Could not retrieve ACR token"
-            else
-              echo "Passing token as stdin to docker login"
-              echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
-            fi
+            echo "::error ::Could not retrieve ACR token"
+          else
+            echo "Passing token as stdin to docker login"
+            echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
+          fi
 
       - name: Container build and push to a Azure Container Registry (ACR)
         env:
