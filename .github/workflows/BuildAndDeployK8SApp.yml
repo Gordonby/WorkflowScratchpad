@@ -69,37 +69,25 @@ jobs:
       
       - name: Connect to Azure Container Registry (ACR)
         run: |
-          set -e 
-
           echo "Retrieving access token from $ACRNAME"
-          az acr login -n $ACRNAME --expose-token
           ACRTOKEN=$(az acr login -n $ACRNAME --expose-token --output tsv --query accessToken)
-
-          echo "Token received. Token length is ${#ACRTOKEN}"
 
           if [ -z "$ACRTOKEN" ]
           then
             echo "ACR Token was not retrieved successfully"
-
-            echo "Retrieving ACR information for $ACRNAME"
-            ACRINFO=$(az acr show -n $ACRNAME)
-
-            echo "Re-running full ACR login command in debug mode"
-            az acr login --name $ACRNAME --expose-token --debug
-
-            echo "::error ::Could not retrieve ACR token"
-          else
-            echo "Passing token as stdin to docker login"
-            echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
+            exit 1
           fi
+          
+          echo "Passing token as stdin to docker login"
+          echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
       - name: Container build and push to a Azure Container Registry (ACR)
         env:
           APPREPOPATH: "${{ inputs.APPREPOPATH}}"
         run: |
           cd $APPREPOPATH
-          docker build . -t ${{ inputs.ACRNAME }}.azurecr.io/${{ inputs.APP_NAME }}:${{ github.sha }}
-          docker push ${{ inputs.ACRNAME }}.azurecr.io/${{ inputs.APP_NAME }}:${{ github.sha }}
+          docker build . -t ${{ inputs.ACRNAME }}.azurecr.io/${{ inputs.APPNAME }}:${{ github.sha }}
+          docker push ${{ inputs.ACRNAME }}.azurecr.io/${{ inputs.APPNAME }}:${{ github.sha }}
           
   Deploy:
     runs-on: ubuntu-latest
