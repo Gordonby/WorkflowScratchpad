@@ -71,6 +71,16 @@ jobs:
         run:
           set -e 
           
+          echo "[OPTIONAL STEPS]"
+          echo "Retrieving ACR information for $ACRNAME"
+          ACRINFO=$(az acr show -n $ACRNAME)
+
+          echo "Is admin user enabled"
+          echo $ACRINFO | jq -r ".adminUserEnabled"
+
+          echo "Is public network access enabled"
+          echo $ACRINFO | jq -r ".publicNetworkAccess"        
+          
           echo "Retrieving access token from $ACRNAME"
           az acr login -n $ACRNAME --expose-token
           ACRTOKEN=$(az acr login -n $ACRNAME --expose-token --output tsv --query accessToken)
@@ -80,16 +90,7 @@ jobs:
           echo "ACR Token was not retrieved"
           az acr login --name $ACRNAME --expose-token
 
-          ACRINFO=$(az acr show -n $ACRNAME)
 
-          echo "Is admin user enabled"
-          echo $ACRINFO | jq -r ".adminUserEnabled"
-
-          echo "Is public network access enabled"
-          echo $ACRINFO | jq -r ".publicNetworkAccess"
-
-          exit 1
-          
           
           echo "Passing token as stdin to docker login"
           echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
