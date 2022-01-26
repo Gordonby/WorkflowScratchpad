@@ -72,8 +72,7 @@ jobs:
           set -e 
           
           echo "[OPTIONAL STEPS]"
-          echo "Retrieving ACR information for $ACRNAME"
-          ACRINFO=$(az acr show -n $ACRNAME)
+         
           
           echo "Retrieving access token from $ACRNAME"
           az acr login -n $ACRNAME --expose-token
@@ -84,7 +83,18 @@ jobs:
           echo "ACR Token was not retrieved"
           az acr login --name $ACRNAME --expose-token
 
-
+          if [ "${#ACRTOKEN}" == "0" ]
+          then
+            echo "ACR Token was not retrieved"
+            
+            echo "Retrieving ACR information for $ACRNAME"
+            ACRINFO=$(az acr show -n $ACRNAME)
+          
+            echo "Re-running full ACR login command"
+            az acr login --name $ACRNAME --expose-token
+            
+            exit 1
+          fi
           
           echo "Passing token as stdin to docker login"
           echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
