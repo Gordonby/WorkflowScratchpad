@@ -71,13 +71,14 @@ jobs:
         run:
           set -e 
           
-          echo "Retrieving access token from $ACRNAME in $RG"
-          ACRTOKEN=$(az acr login -n $ACRNAME -g $RG --expose-token --output tsv --query accessToken)
+          echo "Retrieving access token from $ACRNAME"
+          az acr login -n $ACRNAME --expose-token
+          ACRTOKEN=$(az acr login -n $ACRNAME --expose-token --output tsv --query accessToken)
           
           echo "Token received. Token length is ${#ACRTOKEN}"
           
-          if [ "${#ACRTOKEN}" == "0" ]
-          then
+          #if [ "${#ACRTOKEN}" == "0" ]
+          #then
             echo "ACR Token was not retrieved"
             az acr login --name $ACRNAME --expose-token
             
@@ -90,7 +91,7 @@ jobs:
             echo $ACRINFO | jq -r ".publicNetworkAccess"
             
             exit 1
-          fi
+          #fi
           
           
           echo "Passing token as stdin to docker login"
