@@ -90,8 +90,8 @@ jobs:
             echo "Retrieving ACR information for $ACRNAME"
             ACRINFO=$(az acr show -n $ACRNAME)
           
-            echo "Re-running full ACR login command"
-            az acr login --name $ACRNAME --expose-token
+            echo "Re-running full ACR login command in debug mode"
+            az acr login --name $ACRNAME --expose-token --debug
             
             echo "::error ::Could not retrieve ACR token"
             exit 1
