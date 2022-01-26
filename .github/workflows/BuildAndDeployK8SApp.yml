@@ -80,12 +80,9 @@ jobs:
           
           echo "Token received. Token length is ${#ACRTOKEN}"
           
-          echo "ACR Token was not retrieved"
-          az acr login --name $ACRNAME --expose-token
-
-          if [ "${#ACRTOKEN}" == "0" ]
+          if [ -z "$ACRTOKEN" ]
           then
-            echo "ACR Token was not retrieved"
+            echo "ACR Token was not retrieved successfully"
             
             echo "Retrieving ACR information for $ACRNAME"
             ACRINFO=$(az acr show -n $ACRNAME)
@@ -94,11 +91,10 @@ jobs:
             az acr login --name $ACRNAME --expose-token --debug
             
             echo "::error ::Could not retrieve ACR token"
-            exit 1
+          else
+            echo "Passing token as stdin to docker login"
+            echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
           fi
-          
-          echo "Passing token as stdin to docker login"
-          echo $ACRTOKEN | docker login $ACRNAME.azurecr.io -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
       - name: Container build and push to a Azure Container Registry (ACR)
         env:
