@@ -17,12 +17,14 @@ jobs:
         uses: technote-space/broken-link-checker-action@v2
         with: 
           TARGET: https://github.com/Azure/AKS-Construction/blob/main/README.md
+          RECURSIVE: false
         
       - name: Helper - Broken Link Check
         uses: technote-space/broken-link-checker-action@v2
         with: 
           TARGET: https://azure.github.io/AKS-Construction/
           RECURSIVE: false
+          
       - name: Helper (preview) - Broken Link Check
         uses: technote-space/broken-link-checker-action@v2
         with: 
