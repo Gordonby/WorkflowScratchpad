@@ -42,8 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          # Check all markdown and html files in repo (default)
-          args: --base 'https://azure.github.io/AKS-Construction'
+          args: -b 'https://azure.github.io/AKS-Construction'
 
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
