@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Repo - Broken Link Check
         uses: technote-space/broken-link-checker-action@v2
+        with: 
+          TARGET: https://github.com/Azure/AKS-Construction/blob/main/README.md
+        
       - name: Helper - Broken Link Check
         uses: technote-space/broken-link-checker-action@v2
         with: 
