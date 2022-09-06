@@ -48,6 +48,8 @@ jobs:
           filenamewordmatch: 'helper-export'
         run: |
           npx playwright test --browser chromium helper-export-aksc-html-site.spec --reporter list
+          
+          echo 'prodsite.html'
 
       - name: Link Checker
         id: lychee
@@ -55,7 +57,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          args: --verbose 'prodsite.html' 
+          args: --verbose 'prodsite.html' --exclude aks.svg
 
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
