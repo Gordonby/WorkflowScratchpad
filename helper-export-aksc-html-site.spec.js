@@ -3,8 +3,8 @@ const fs = require('fs');
 
 test('prodsite', async ({ page }) => {
 
-  //'https://azure.github.io/AKS-Construction?feature=defender'
-  await page.goto('https://azure.github.io/AKS-Construction/');
+  //use a link that will create the most links (preview features, feature flags etc)
+  await page.goto('https://azure.github.io/AKS-Construction?feature=defender');
 
   //Wait for the stack
   const stackops='[data-testid="stackops"]';
