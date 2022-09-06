@@ -63,16 +63,6 @@ jobs:
           npx playwright install-deps chromium
           npm i -D playwright-expect
 
-      - name: Verifying Playwright install
-        run: |
-          cd helper
-
-          echo "Looking for playwright"
-          ls node_modules | grep playwright
-
-          echo "Playwright version"
-          npx playwright -V
-
       - name: Playwright - Grab html
         env:
           filenamewordmatch: 'helper-export'
