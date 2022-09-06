@@ -61,6 +61,7 @@ jobs:
         run: |
           npx playwright install
           npx playwright install-deps chromium
+          npm install -D @playwright/test
           npm i -D playwright-expect
 
       - name: Playwright - Grab html
