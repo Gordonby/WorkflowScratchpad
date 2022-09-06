@@ -57,7 +57,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          args: --verbose 'prodsite.html' --exclude aks.svg
+          args: --format detailed -n --exclude aks.svg 'prodsite.html' 
 
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
