@@ -27,9 +27,9 @@ jobs:
         if: steps.lychee.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v4
         with:
-          title: Link Checker Report
+          title: 'Bot: Broken Links Detected in Repo'
           content-filepath: ./lychee/out.md
-          labels: report, automated issue
+          labels: automated issue
 
   helperProdLinkChecker:
     runs-on: ubuntu-latest
@@ -64,6 +64,6 @@ jobs:
         if: steps.lychee.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v4
         with:
-          title: Link Checker Report
+          title: 'Bot: Broken Links Detected in AKS Helper'
           content-filepath: ./lychee/out.md
-          labels: report, automated issue
+          labels: automated issue
