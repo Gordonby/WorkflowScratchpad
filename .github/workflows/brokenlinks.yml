@@ -57,8 +57,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          args: "'prodsite.html' --format detailed --exclude *.svg *.png"
-
+          args: "'prodsite.html' --format detailed --exclude './*.svg' './*.png' -n -v"
+          format: detailed
+          
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v4
