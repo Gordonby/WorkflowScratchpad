@@ -3,6 +3,7 @@ const fs = require('fs');
 
 test('prodsite', async ({ page }) => {
 
+  //'https://azure.github.io/AKS-Construction?feature=defender'
   await page.goto('https://azure.github.io/AKS-Construction/');
 
   //Wait for the stack
