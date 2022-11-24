@@ -1,8 +1,17 @@
 name: ReusePlusMan 
 
-
-
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Which GitHub Environment to use'
+        required: false
+        type: string
+      rg:
+        description: 'Resource Group name'
+        required: true
+        type: string
+        
   workflow_call:
     inputs:
       environment:
