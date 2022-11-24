@@ -1,0 +1,35 @@
+name: ReusePlusMan 
+
+
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Which GitHub Environment to use'
+        required: false
+        type: string
+      rg:
+        description: 'Resource Group name'
+        required: true
+        type: string
+
+    outputs:
+      TotalCost:
+        description: "The TotalCost"
+        value: 0
+
+permissions:
+  id-token: read
+  contents: read
+
+concurrency: "${{ inputs.environment }}-${{ inputs.rg }}"
+
+jobs:
+  Estimate:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+    - name: Echoy
+      run: |
+        echo ${{ inputs.rg }}
