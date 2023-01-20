@@ -13,3 +13,5 @@ jobs:
     # Runs a single command using the runners shell
     - name: Echo environment variable value
       run: echo "Hello ${{ VARS.ENABLETELEMETRY }}"
+    - name: Echo environment variable value
+      run: echo "Hello ${{ VARS.ENABLETELEMETRY == true }}"
