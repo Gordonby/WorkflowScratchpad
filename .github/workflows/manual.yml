@@ -14,4 +14,4 @@ jobs:
     - name: Echo environment variable value
       run: echo "Hello ${{ VARS.ENABLETELEMETRY }}"
     - name: Echo environment variable value
-      run: echo "Hello ${{ VARS.ENABLETELEMETRY == true }}"
+      run: echo "Hello ${{ VARS.ENABLETELEMETRY == 'true' }}"
