@@ -27,6 +27,7 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
+        echo repo ${{ github.repository }}
         echo repoOwner ${{ github.repository_owner }}
         echo repoName ${{ github.event.repository.name }}
         
@@ -77,7 +78,7 @@ jobs:
         #gh api repos/${{ github.event.repository.owner }}/pulls/${{ github.event.repository.name }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
         #gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
         #gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repository.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
-        gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews
+        gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews
 
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
