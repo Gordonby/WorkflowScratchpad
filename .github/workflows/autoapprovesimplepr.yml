@@ -27,6 +27,7 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
+        echo base ${{ toJson(github.base) }}
         
     - name: Git List remotes
       run: git remote -v
