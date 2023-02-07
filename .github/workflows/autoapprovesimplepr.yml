@@ -28,7 +28,7 @@ jobs:
         echo baseref ${{ github.base_ref }}
         
     - name: Git Diff Output
-      run: git diff ${{ github.base_ref }} --stat
+      run: git diff @{u} --stat
       
     - name: Output git status 
       run: git status
