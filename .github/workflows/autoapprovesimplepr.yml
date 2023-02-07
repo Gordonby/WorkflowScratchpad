@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v3.3.0
       with:
         fetch-depth: 0
-        #ref: ${{ github.head_ref }}
+        ref: ${{ github.head_ref }}
         
     - name: GitHub param debug
       run: |
@@ -37,16 +37,18 @@ jobs:
     - name: Git List remotes
       run: git remote -v
   
+    - name: Output git status 
+      run: git status
+    
+    - name: Git Diff Output 1
+      run: git diff HEAD --stat
       
-    - name: Git Diff Output
+    - name: Git Diff Output 2
       run: git diff @{u} --stat
       
     - name: Git Diff Output baseref
       run: git diff  origin/${{ github.base_ref }} --stat
-      
-    - name: Output git status 
-      run: git status
-      
+
     - name: Approve PR
       env:
         GH_TOKEN: ${{ github.token }}
