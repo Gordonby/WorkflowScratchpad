@@ -24,7 +24,8 @@ jobs:
       run: |
         echo event ${{ github.event_name }}
         echo headref ${{ github.head_ref }} 
-        echo refname ${{ github.ref_name }}
+        echo ref ${{ github.ref_name }}
+        echo baseref ${{ github.base_ref }}
         
     - name: Git Diff Output
       run: git diff --stat
