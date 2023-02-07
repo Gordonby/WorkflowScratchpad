@@ -88,16 +88,9 @@ jobs:
         echo $REVIEWIDS
         
         while IFS= read -r line; do
-            echo "... $line ..."
+            gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$line/dismissals
         done <<< "$REVIEWIDS"
         
-        echo PR Review IDs xargs
-        #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)'
-        
-        echo Dismiss review(s)
-        #echo @(review_id)
-        #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
-
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
       env:
