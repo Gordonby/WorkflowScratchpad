@@ -27,7 +27,6 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
-        echo repoOwner ${{ toJson(github.event.repository.owner.name) }}
         echo repoName ${{ github.event.repository.name }}
         
     - name: GitHub context inspect debug
@@ -35,7 +34,7 @@ jobs:
       env:
         PR_CONTEXT: ${{ toJson(github.event.pull_request) }}
         REPO_OWNER_CONTEXT: ${{ toJson(github.event.repository.owner) }}
-        REPO_CONTEXT: ${{ toJson(github.event.repository.owner) }}
+        REPO_CONTEXT: ${{ toJson(github.event.repository) }}
       run: |
         echo "$REPO_CONTEXT"
         echo "$PR_CONTEXT"
@@ -69,7 +68,9 @@ jobs:
         echo ${{ steps.evalCriteria.CRITERIAMET }}
         echo ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
 
-        gh api repos/${{ github.event.repository.owner }}/pulls/${{ github.event.repository.name }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
+        
+        #gh api repos/${{ github.event.repository.owner }}/pulls/${{ github.event.repository.name }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
+        gh api repos/${{ github.event.repository.name }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
 
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
