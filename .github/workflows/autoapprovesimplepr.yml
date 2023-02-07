@@ -27,5 +27,7 @@ jobs:
       run: git status
       
     - name: Approve PR
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         gh pr review --approve --comment "lgtm"
