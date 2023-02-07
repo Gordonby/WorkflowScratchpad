@@ -31,6 +31,9 @@ jobs:
     - name: Git List remotes
       run: git remote -v
         
+    - name: Git Diff Output baseref
+      run: git diff ${{ github.base_ref }} --stat
+      
     - name: Git Diff Output
       run: git diff @{u} --stat
       
