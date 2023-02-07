@@ -27,7 +27,8 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
-        echo repoOwner ${{ github.event.repository.owner }}
+        echo repoOwner ${{ toJson(github.event.repository.owner) }}
+        echo repoOwner ${{ toJson(github.event.repository.owner.name) }}
         echo repoName ${{ github.event.repository.name }}
         
     - name: GitHub context inspect debug
