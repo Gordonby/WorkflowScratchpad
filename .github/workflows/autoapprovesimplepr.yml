@@ -9,7 +9,7 @@ on: [pull_request]
 jobs:
   autoapprove:
     if: ${{ !github.event.pull_request.head.repo.fork }}
-
+    name: Auto Approve PR
     runs-on: ubuntu-latest
     permissions:
       contents: read
