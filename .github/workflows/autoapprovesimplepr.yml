@@ -21,8 +21,8 @@ jobs:
         fetch-depth: 0
     
     - name: Git Diff Output
-      run: git diff HEAD --stat
+      run: git diff ${{ github.head_ref }} --stat
     
-    - name: Output git diff from main to the latest release
+    - name: Output git diff 
       run: git diff --stat
       
