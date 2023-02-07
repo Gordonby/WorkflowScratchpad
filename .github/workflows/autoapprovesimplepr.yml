@@ -90,7 +90,9 @@ jobs:
         
         while IFS= read -r REVIEW_ID; do
             echo Dismissing review $REVIEW_ID on PR ${{ github.event.number }}
-            gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$REVIEW_ID/dismissals
+            DISMISSURL="repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$REVIEW_ID/dismissals"
+            echo $DISMISSURL
+            gh api $DISMISSURL
         done <<< "$REVIEWIDS"
         
     - name: Approve PR
