@@ -68,8 +68,10 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        echo ${{ steps.evalCriteria.CRITERIAMET }}
-        echo ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
+        echo criteriaMet ${{ steps.evalCriteria.CRITERIAMET }}
+        echo criteriaIsMet ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
+        echo repoOwner ${{ github.repository_owner }}
+        echo pr number ${{ github.event.number }}
 
         
         #gh api repos/${{ github.event.repository.owner }}/pulls/${{ github.event.repository.name }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
