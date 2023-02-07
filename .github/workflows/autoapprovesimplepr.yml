@@ -86,8 +86,11 @@ jobs:
         echo PR Review IDs
         gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)'
         
-        echo PR Review IDs 2
+        echo PR Review IDs xargs
         gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)'
+        
+        echo Dismiss review(s)
+        gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
 
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
