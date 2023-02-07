@@ -27,15 +27,17 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
-        echo repoOwner ${{ toJson(github.event.repository.owner) }}
         echo repoOwner ${{ toJson(github.event.repository.owner.name) }}
         echo repoName ${{ github.event.repository.name }}
         
     - name: GitHub context inspect debug
       continue-on-error: true
       env:
-        GITHUB_CONTEXT: ${{ toJson(github.event.pull_request) }}
-      run: echo "$GITHUB_CONTEXT"
+        PR_CONTEXT: ${{ toJson(github.event.pull_request) }}
+        REPO_OWNER_CONTEXT: ${{ toJson(github.event.repository.owner) }}
+      run: |
+        echo "$REPO_OWNER_CONTEXT"
+        echo "$PR_CONTEXT"
         
     - name: Git List remotes
       run: git remote -v
