@@ -29,5 +29,6 @@ jobs:
     - name: Approve PR
       env:
         GH_TOKEN: ${{ github.token }}
+        PR_URL: ${{ github.event.pull_request.html_url }}
       run: |
         gh pr review --approve
