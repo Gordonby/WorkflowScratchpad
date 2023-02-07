@@ -27,6 +27,10 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
+        
+    - name: GitHub obj debug
+      continue-on-error: true
+      run: |
         echo base ${{ toJson(github.event.pull_request) }}
         
     - name: Git List remotes
