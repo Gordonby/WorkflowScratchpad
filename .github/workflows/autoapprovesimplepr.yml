@@ -30,4 +30,4 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh pr review --approve --comment "lgtm"
+        gh pr review --approve
