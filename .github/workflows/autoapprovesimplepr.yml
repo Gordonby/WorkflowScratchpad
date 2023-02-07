@@ -90,6 +90,7 @@ jobs:
         gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)'
         
         echo Dismiss review(s)
+        echo @(review_id)
         gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
 
     - name: Approve PR
