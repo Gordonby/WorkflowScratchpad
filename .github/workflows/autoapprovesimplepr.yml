@@ -72,6 +72,7 @@ jobs:
         echo criteriaMet ${{ steps.evalCriteria.CRITERIAMET }}
         echo criteriaIsMet ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
         echo repoOwner ${{ github.repository_owner }}
+        echo repoName ${{ github.event.repository.name }}
         echo pr number ${{ github.event.number }}
 
         
@@ -88,7 +89,8 @@ jobs:
         echo $REVIEWIDS
         
         while IFS= read -r line; do
-            gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$line/dismissals
+            echo Dismissing review $line on PR ${{ github.event.number }}
+            gh api repos/${{ github.event.repository.name }}/pulls/${{ github.event.number }}/reviews/$line/dismissals
         done <<< "$REVIEWIDS"
         
     - name: Approve PR
