@@ -19,7 +19,7 @@ jobs:
         fetch-depth: 0
     
     - name: Git Diff Output
-      run: git diff --stat
+      run: git diff HEAD --stat
     
     - name: Output git diff from main to the latest release
       run: git diff --stat
