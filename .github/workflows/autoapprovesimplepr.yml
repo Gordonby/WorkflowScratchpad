@@ -49,9 +49,21 @@ jobs:
     - name: Git Diff Output baseref
       run: git diff  origin/${{ github.base_ref }} --stat
 
+    - name: Evaluate Auto Approval
+      id: evalCriteria
+      run: |
+        CRITERIAMET=true
+        echo "CRITERIAMET=$CRITERIAMET" >> $GITHUB_OUTPUT
+
+    - name: Dismiss approvals
+      if: ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
+
     - name: Approve PR
+      if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
       env:
         GH_TOKEN: ${{ github.token }}
         PR_URL: ${{ github.event.pull_request.html_url }}
-      run: |
-        gh pr review --approve
+      run: gh pr review --approve
