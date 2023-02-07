@@ -65,12 +65,12 @@ jobs:
         echo "CRITERIAMET=$CRITERIAMET" >> $GITHUB_OUTPUT
 
     - name: Dismiss approvals
-      if: ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
+      if: ${{ steps.evalCriteria.outputs.CRITERIAMET != 'true' }}
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        echo criteriaMet ${{ steps.evalCriteria.CRITERIAMET }}
-        echo criteriaIsMet ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
+        echo criteriaMet ${{ steps.evalCriteria.outputs.CRITERIAMET }}
+        echo criteriaIsMet ${{ steps.evalCriteria.outputs.CRITERIAMET != 'true' }}
         echo repoOwner ${{ github.repository_owner }}
         echo repoName ${{ github.event.repository.name }}
         echo pr number ${{ github.event.number }}
