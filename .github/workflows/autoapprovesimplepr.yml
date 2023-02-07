@@ -65,7 +65,7 @@ jobs:
         echo ${{ steps.evalCriteria.CRITERIAMET }}
         echo ${{ steps.evalCriteria.CRITERIAMET != 'true' }}
         echo $REPOORG $REPO
-        gh api repos/$REPOORG/pulls/$REPO/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
+        #gh api repos/$REPOORG/pulls/$REPO/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
 
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
