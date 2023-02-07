@@ -19,7 +19,8 @@ jobs:
     - uses: actions/checkout@v3.3.0
       with:
         fetch-depth: 0
-        ref: ${{ github.head_ref }}
+        #ref: ${{ github.head_ref }}
+        ref: ${{ github.ref_name }}
         
     - name: GitHub param debug
       run: |
@@ -27,7 +28,7 @@ jobs:
         echo headref ${{ github.head_ref }} 
         echo ref ${{ github.ref_name }}
         echo baseref ${{ github.base_ref }}
-        echo base ${{ toJson(github.base) }}
+        echo base ${{ toJson(github.event.pull_request) }}
         
     - name: Git List remotes
       run: git remote -v
