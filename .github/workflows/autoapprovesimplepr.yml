@@ -79,9 +79,15 @@ jobs:
         #gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
         #gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repository.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
         #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews
+        
         echo PR Reviews
         #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")'
+        
+        echo PR Review IDs
         gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)'
+        
+        echo PR Review IDs 2
+        gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)'
 
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
