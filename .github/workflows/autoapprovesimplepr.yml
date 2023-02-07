@@ -92,7 +92,7 @@ jobs:
             echo Dismissing review $REVIEW_ID on PR ${{ github.event.number }}
             DISMISSURL="repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$REVIEW_ID/dismissals"
             echo $DISMISSURL
-            gh api $DISMISSURL
+            gh api --method PUT -H "Accept: application/vnd.github+json" $DISMISSURL -f event='DISMISS' 
         done <<< "$REVIEWIDS"
         
     - name: Approve PR
