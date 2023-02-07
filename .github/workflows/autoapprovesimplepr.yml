@@ -89,10 +89,15 @@ jobs:
         echo $REVIEWIDS
         
         while IFS= read -r REVIEW_ID; do
+          if [ -z "$REVIEWIDS" ]
+          then
             echo Dismissing review $REVIEW_ID on PR ${{ github.event.number }}
             DISMISSURL="repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$REVIEW_ID/dismissals"
             gh api --method PUT -H "Accept: application/vnd.github+json" $DISMISSURL -f message='Bot withdraws previous approval. Beep bleep bloooop' -f event='DISMISS' 
+          fi
         done <<< "$REVIEWIDS"
+        
+
         
     - name: Approve PR
       if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
