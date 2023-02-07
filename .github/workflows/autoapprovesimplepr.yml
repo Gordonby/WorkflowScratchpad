@@ -35,9 +35,11 @@ jobs:
         PR_CONTEXT: ${{ toJson(github.event.pull_request) }}
         REPO_OWNER_CONTEXT: ${{ toJson(github.event.repository.owner) }}
         REPO_CONTEXT: ${{ toJson(github.event.repository) }}
+        FULL_CONTEXT: ${{ toJson(github) }}
       run: |
-        echo "$REPO_CONTEXT"
-        echo "$PR_CONTEXT"
+        echo "$FULL_CONTEXT"
+        #echo "$REPO_CONTEXT"
+        #echo "$PR_CONTEXT"
         
     - name: Git List remotes
       run: git remote -v
