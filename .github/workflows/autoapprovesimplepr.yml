@@ -26,3 +26,6 @@ jobs:
     - name: Output git diff 
       run: git diff --stat
       
+    - name: Output git diff 
+      run: |
+        gh pr review --approve --comment "lgtm"
