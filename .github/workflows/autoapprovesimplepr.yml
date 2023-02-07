@@ -75,12 +75,6 @@ jobs:
         echo repoName ${{ github.event.repository.name }}
         echo pr number ${{ github.event.number }}
 
-        
-        #gh api repos/${{ github.event.repository.owner }}/pulls/${{ github.event.repository.name }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
-        #gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
-        #gh api repos/${{ github.repository_owner }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repository.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
-        #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews
-        
         echo PR Reviews
         #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")'
         
