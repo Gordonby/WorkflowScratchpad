@@ -3,6 +3,7 @@ name: AutoApproveSimpleChanges
 # 1. Trust. Cannot be a PR from a fork. Can only be from another branch in this repo.
 # 2. Content. Only markdown files can be changed.
 # 3. Trust. PR Creator must have ______
+# 4. PR is ready for review and not draft
 
 on: [pull_request]
 
