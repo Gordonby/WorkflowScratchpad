@@ -1,0 +1,21 @@
+name: AutoApproveSimpleChanges
+on: [pull_request]
+
+jobs:
+  autoapprove:
+    if: ${{ !github.event.pull_request.head.repo.fork }}
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v3.3.0
+    
+    - name: Git Diff Output
+      run: git diff --stat
+    
+    - name: Output git diff from main to the latest release
+      run: git diff --stat
+      
