@@ -1,4 +1,7 @@
 name: AutoApproveSimpleChanges
+# Will faciliate auto approval of PR's given certain criteria are met.
+# 1. Trust. Cannot be a PR from a fork. Can only be from another branch in this repo.
+
 on: [pull_request]
 
 jobs:
@@ -12,6 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3.3.0
+      with:
+        fetch-depth: 0
     
     - name: Git Diff Output
       run: git diff --stat
