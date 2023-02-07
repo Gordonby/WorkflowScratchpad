@@ -21,11 +21,11 @@ jobs:
         fetch-depth: 0
     
     - name: Git Diff Output
-      run: git diff ${{ github.head_ref }} --stat
-    
-    - name: Output git diff 
       run: git diff --stat
+    
+    - name: Output git status 
+      run: git status
       
-    - name: Output git diff 
+    - name: Approve PR
       run: |
         gh pr review --approve --comment "lgtm"
