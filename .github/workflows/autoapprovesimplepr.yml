@@ -100,7 +100,7 @@ jobs:
 
         
     - name: Approve PR
-      if: ${{ steps.evalCriteria.CRITERIAMET == 'true' }}
+      if: ${{ steps.evalCriteria.outputs.CRITERIAMET == 'true' }}
       env:
         GH_TOKEN: ${{ github.token }}
         PR_URL: ${{ github.event.pull_request.html_url }}
