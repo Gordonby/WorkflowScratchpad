@@ -1,6 +1,8 @@
 name: AutoApproveSimpleChanges
 # Will faciliate auto approval of PR's given certain criteria are met.
 # 1. Trust. Cannot be a PR from a fork. Can only be from another branch in this repo.
+# 2. Content. Only markdown files can be changed.
+# 3. Trust. PR Creator must have ______
 
 on: [pull_request]
 
