@@ -20,9 +20,15 @@ jobs:
       with:
         fetch-depth: 0
     
+    - name: GitHub param debug
+      run: |
+        echo event ${{ github.event_name }}
+        echo headref ${{ github.head_ref }} 
+        echo refname ${{ github.ref_name }}
+        
     - name: Git Diff Output
       run: git diff --stat
-    
+      
     - name: Output git status 
       run: git status
       
