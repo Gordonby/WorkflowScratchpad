@@ -20,3 +20,7 @@ jobs:
       with:
         imageToDeploy: mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
         resourceGroup: containerapp
+        #imageToDeploy: crakszarablah.azurecr.io/azurevote:445345345345345
+        #acrName: crakszarablah
+        #acrUsername: ${{ secrets.REGISTRY_USERNAME }}
+        #acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
