@@ -19,3 +19,4 @@ jobs:
       uses: azure/container-apps-deploy-action@v0
       with:
         imageToDeploy: mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
+        resourceGroup: containerapp
