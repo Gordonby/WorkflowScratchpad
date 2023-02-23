@@ -1,10 +1,16 @@
 name: AutoApproveSimpleChanges
+# Will faciliate auto approval of PR's given certain criteria are met.
+# 1. Trust. Cannot be a PR from a fork. Can only be from another branch in this repo.
+# 2. Content. Only markdown files can be changed.
+# 3. Trust. PR Creator must have ______
+# 4. PR is ready for review and not draft
+
 on: [pull_request]
 
 jobs:
   autoapprove:
     if: ${{ !github.event.pull_request.head.repo.fork }}
-
+    name: Auto Approve PR
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -12,10 +18,85 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3.3.0
+      with:
+        fetch-depth: 0
+        ref: ${{ github.head_ref }}
+        
+    - name: GitHub param debug
+      run: |
+        echo event ${{ github.event_name }}
+        echo headref ${{ github.head_ref }} 
+        echo ref ${{ github.ref_name }}
+        echo baseref ${{ github.base_ref }}
+        echo repo ${{ github.repository }}
+        echo repoOwner ${{ github.repository_owner }}
+        echo repoName ${{ github.event.repository.name }}
+        
+    - name: GitHub context inspect debug
+      continue-on-error: true
+      env:
+        PR_CONTEXT: ${{ toJson(github.event.pull_request) }}
+        REPO_OWNER_CONTEXT: ${{ toJson(github.event.repository.owner) }}
+        REPO_CONTEXT: ${{ toJson(github.event.repository) }}
+        FULL_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$FULL_CONTEXT"
+        #echo "$REPO_CONTEXT"
+        #echo "$PR_CONTEXT"
+        
+    - name: Git List remotes
+      run: git remote -v
+  
+    - name: Output git status 
+      run: git status
     
-    - name: Git Diff Output
-      run: git diff --stat
-    
-    - name: Output git diff from main to the latest release
-      run: git diff --stat
+    - name: Git Diff Output 1
+      run: git diff HEAD --stat
       
+    - name: Git Diff Output 2
+      run: git diff @{u} --stat
+      
+    - name: Git Diff Output baseref
+      run: git diff  origin/${{ github.base_ref }} --stat
+
+    - name: Evaluate Auto Approval
+      id: evalCriteria
+      run: |
+        CRITERIAMET=true
+        echo "CRITERIAMET=$CRITERIAMET" >> $GITHUB_OUTPUT
+
+    - name: Dismiss approvals
+      if: ${{ steps.evalCriteria.outputs.CRITERIAMET != 'true' }}
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        echo criteriaMet ${{ steps.evalCriteria.outputs.CRITERIAMET }}
+        echo criteriaIsMet ${{ steps.evalCriteria.outputs.CRITERIAMET != 'true' }}
+        echo repoOwner ${{ github.repository_owner }}
+        echo repoName ${{ github.event.repository.name }}
+        echo pr number ${{ github.event.number }}
+
+        echo PR Reviews
+        #gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")'
+        
+        echo PR Review IDs
+        REVIEWIDS=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)')
+        echo $REVIEWIDS
+        
+        while IFS= read -r REVIEW_ID; do
+          if [ -z "$REVIEWIDS" ]
+          then
+            echo Dismissing review $REVIEW_ID on PR ${{ github.event.number }}
+            DISMISSURL="repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/$REVIEW_ID/dismissals"
+            gh api --method PUT -H "Accept: application/vnd.github+json" $DISMISSURL -f message='Bot withdraws previous approval. Beep bleep bloooop' -f event='DISMISS' 
+          fi
+        done <<< "$REVIEWIDS"
+        
+
+        
+    - name: Approve PR
+      if: ${{ steps.evalCriteria.outputs.CRITERIAMET == 'true' }}
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_URL: ${{ github.event.pull_request.html_url }}
+      run: gh pr review --approve
